@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "e23mon"
+version = "0.1.0"
+description = "OSFI E-23 model inventory checks and drift monitoring with calibrated false-alarm rates"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "numpy>=1.24",
+    "pandas>=2.0",
+    "scipy>=1.10",
+    "scikit-learn>=1.3",
+    "openpyxl>=3.1",
+    "PyYAML>=6.0",
+    "xlrd>=2.0",
+    "matplotlib>=3.7",
+]
+
+[project.optional-dependencies]
+test = ["pytest>=7"]
+
+[project.scripts]
+e23mon = "e23mon.cli:main"
+
+[tool.setuptools]
+packages = ["e23mon"]
+
+[tool.setuptools.package-data]
+e23mon = ["sample/*.csv", "sample/*.yaml"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
