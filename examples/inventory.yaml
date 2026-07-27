@@ -1,0 +1,188 @@
+models:
+- model_id: CR-PD-001
+  name: Credit card PD scorecard (logistic)
+  owner: Retail Credit Risk
+  business_use: Adjudication and IFRS 9 staging
+  category: Credit
+  materiality: High
+  complexity: Medium
+  uses_ai_ml: 'no'
+  regulatory_use: 'yes'
+  risk_rating: High
+  status: Active
+  last_review: '2026-03-01'
+  next_review: '2027-03-01'
+  monitoring_interval_months: '1'
+  last_monitoring: '2026-09-15'
+  last_scored_date: '2026-09-30'
+  as_of: '2026-10-01'
+- model_id: CR-PD-002
+  name: Credit card PD challenger (gradient boosting)
+  owner: Retail Credit Risk
+  business_use: Challenger to CR-PD-001
+  category: Credit
+  materiality: Medium
+  complexity: High
+  uses_ai_ml: 'yes'
+  regulatory_use: 'no'
+  risk_rating: High
+  status: Active
+  last_review: '2026-04-15'
+  next_review: '2027-04-15'
+  monitoring_interval_months: '3'
+  last_monitoring: '2026-08-31'
+  last_scored_date: '2026-09-30'
+  as_of: '2026-10-01'
+- model_id: CR-LGD-003
+  name: Residential mortgage LGD
+  owner: Mortgage Risk Analytics
+  business_use: Regulatory capital
+  category: Credit
+  materiality: High
+  complexity: Medium
+  uses_ai_ml: 'no'
+  regulatory_use: 'yes'
+  risk_rating: Medium
+  status: Active
+  last_review: '2025-11-01'
+  next_review: '2027-11-01'
+  monitoring_interval_months: '3'
+  last_monitoring: '2026-07-31'
+  last_scored_date: '2026-09-30'
+  as_of: '2026-10-01'
+- model_id: PR-AUTO-004
+  name: Auto insurance pricing GLM
+  owner: Personal Lines Pricing
+  business_use: Rate filing and quoting
+  category: Pricing
+  materiality: Medium
+  complexity: Medium
+  uses_ai_ml: 'no'
+  regulatory_use: 'no'
+  risk_rating: Medium
+  status: Active
+  last_review: '2024-05-01'
+  next_review: '2026-05-01'
+  monitoring_interval_months: '3'
+  last_monitoring: '2026-08-15'
+  last_scored_date: '2026-09-30'
+  as_of: '2026-10-01'
+- model_id: PR-HOME-005
+  name: Home insurance pricing GLM
+  owner: Personal Lines Pricing
+  business_use: Rate filing and quoting
+  category: Pricing
+  materiality: Medium
+  complexity: Medium
+  uses_ai_ml: 'no'
+  regulatory_use: 'no'
+  risk_rating: Medium
+  status: Active
+  last_review: '2025-09-01'
+  next_review: '2027-09-01'
+  monitoring_interval_months: '3'
+  last_monitoring: '2026-08-20'
+  last_scored_date: '2026-09-30'
+  as_of: '2026-10-01'
+- model_id: AML-TM-006
+  name: Transaction monitoring scenarios
+  business_use: Suspicious transaction alerts
+  category: AML
+  materiality: High
+  complexity: Medium
+  uses_ai_ml: 'no'
+  regulatory_use: 'yes'
+  risk_rating: High
+  status: Active
+  last_review: '2026-01-15'
+  next_review: '2027-01-15'
+  monitoring_interval_months: '1'
+  last_monitoring: '2026-09-20'
+  last_scored_date: '2026-09-30'
+  as_of: '2026-10-01'
+- model_id: AML-CRR-007
+  name: Customer risk rating (machine learning)
+  owner: Financial Crimes Analytics
+  business_use: KYC risk classification
+  category: AML
+  materiality: Medium
+  complexity: High
+  uses_ai_ml: 'yes'
+  regulatory_use: 'no'
+  risk_rating: High
+  status: Active
+  last_review: '2026-02-01'
+  next_review: '2027-02-01'
+  monitoring_interval_months: '1'
+  last_monitoring: '2026-06-30'
+  last_scored_date: '2026-09-30'
+  as_of: '2026-10-01'
+- model_id: AI-GEN-008
+  name: Complaint summarization assistant (LLM)
+  owner: Customer Experience Analytics
+  business_use: Summaries for complaint handlers
+  category: AI/ML tool
+  materiality: Low
+  complexity: High
+  uses_ai_ml: 'yes'
+  regulatory_use: 'no'
+  risk_rating: Medium
+  status: Active
+  last_review: '2025-12-01'
+  next_review: '2028-06-01'
+  monitoring_interval_months: '3'
+  last_monitoring: '2026-09-01'
+  last_scored_date: '2026-09-30'
+  as_of: '2026-10-01'
+- model_id: AI-OCR-009
+  name: Document classification for onboarding
+  owner: Operations Automation
+  business_use: Routes onboarding documents
+  category: AI/ML tool
+  materiality: Low
+  complexity: Low
+  uses_ai_ml: 'yes'
+  regulatory_use: 'no'
+  risk_rating: Low
+  status: Active
+  last_review: '2024-11-01'
+  next_review: '2027-11-01'
+  monitoring_interval_months: '12'
+  last_monitoring: '2026-01-31'
+  last_scored_date: '2026-09-30'
+  as_of: '2026-10-01'
+- model_id: FIN-ALLOC-010
+  name: Expense allocation model
+  owner: Finance
+  business_use: Management reporting
+  category: Finance
+  materiality: Low
+  complexity: Low
+  uses_ai_ml: 'no'
+  regulatory_use: 'no'
+  risk_rating: Low
+  status: Active
+  last_review: '2025-06-01'
+  next_review: '2028-06-01'
+  monitoring_interval_months: '12'
+  last_monitoring: '2026-06-30'
+  last_scored_date: '2026-09-30'
+  as_of: '2026-10-01'
+- model_id: CR-BHV-011
+  name: Legacy behaviour score
+  owner: Retail Credit Risk
+  business_use: Line management (retired)
+  category: Credit
+  materiality: Medium
+  complexity: Medium
+  uses_ai_ml: 'no'
+  regulatory_use: 'no'
+  risk_rating: Medium
+  status: Decommissioned
+  last_review: '2023-06-01'
+  next_review: '2025-06-01'
+  monitoring_interval_months: '3'
+  last_monitoring: '2025-10-31'
+  decommissioned_date: '2025-11-30'
+  last_scored_date: '2026-09-28'
+  as_of: '2026-10-01'

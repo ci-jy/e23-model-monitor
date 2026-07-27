@@ -1,0 +1,12 @@
+model_id,name,owner,business_use,category,materiality,complexity,uses_ai_ml,regulatory_use,risk_rating,status,last_review,next_review,monitoring_interval_months,last_monitoring,decommissioned_date,last_scored_date,as_of
+CR-PD-001,Credit card PD scorecard (logistic),Retail Credit Risk,Adjudication and IFRS 9 staging,Credit,High,Medium,no,yes,High,Active,2026-03-01,2027-03-01,1,2026-09-15,,2026-09-30,2026-10-01
+CR-PD-002,Credit card PD challenger (gradient boosting),Retail Credit Risk,Challenger to CR-PD-001,Credit,Medium,High,yes,no,High,Active,2026-04-15,2027-04-15,3,2026-08-31,,2026-09-30,2026-10-01
+CR-LGD-003,Residential mortgage LGD,Mortgage Risk Analytics,Regulatory capital,Credit,High,Medium,no,yes,Medium,Active,2025-11-01,2027-11-01,3,2026-07-31,,2026-09-30,2026-10-01
+PR-AUTO-004,Auto insurance pricing GLM,Personal Lines Pricing,Rate filing and quoting,Pricing,Medium,Medium,no,no,Medium,Active,2024-05-01,2026-05-01,3,2026-08-15,,2026-09-30,2026-10-01
+PR-HOME-005,Home insurance pricing GLM,Personal Lines Pricing,Rate filing and quoting,Pricing,Medium,Medium,no,no,Medium,Active,2025-09-01,2027-09-01,3,2026-08-20,,2026-09-30,2026-10-01
+AML-TM-006,Transaction monitoring scenarios,,Suspicious transaction alerts,AML,High,Medium,no,yes,High,Active,2026-01-15,2027-01-15,1,2026-09-20,,2026-09-30,2026-10-01
+AML-CRR-007,Customer risk rating (machine learning),Financial Crimes Analytics,KYC risk classification,AML,Medium,High,yes,no,High,Active,2026-02-01,2027-02-01,1,2026-06-30,,2026-09-30,2026-10-01
+AI-GEN-008,Complaint summarization assistant (LLM),Customer Experience Analytics,Summaries for complaint handlers,AI/ML tool,Low,High,yes,no,Medium,Active,2025-12-01,2028-06-01,3,2026-09-01,,2026-09-30,2026-10-01
+AI-OCR-009,Document classification for onboarding,Operations Automation,Routes onboarding documents,AI/ML tool,Low,Low,yes,no,Low,Active,2024-11-01,2027-11-01,12,2026-01-31,,2026-09-30,2026-10-01
+FIN-ALLOC-010,Expense allocation model,Finance,Management reporting,Finance,Low,Low,no,no,Low,Active,2025-06-01,2028-06-01,12,2026-06-30,,2026-09-30,2026-10-01
+CR-BHV-011,Legacy behaviour score,Retail Credit Risk,Line management (retired),Credit,Medium,Medium,no,no,Medium,Decommissioned,2023-06-01,2025-06-01,3,2025-10-31,2025-11-30,2026-09-28,2026-10-01
