@@ -174,7 +174,7 @@ def main(argv=None) -> int:
     m.add_argument("--out", default="out")
     m.add_argument("--bins", type=int, default=10)
     m.add_argument("--alpha", type=float, default=0.05)
-    m.add_argument("--null-draws", type=int, default=500)
+    m.add_argument("--null-draws", type=int, default=1000)
     m.add_argument("--boot", type=int, default=200)
     m.add_argument("--seed", type=int, default=0)
     m.add_argument("--no-verify", action="store_true", help="skip the LibreOffice formula recalculation check")

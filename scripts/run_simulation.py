@@ -19,7 +19,7 @@ def main():
     ap.add_argument("--workers", type=int, default=3)
     ap.add_argument("--out", default="docs/results")
     a = ap.parse_args()
-    kw = dict(n_null=1000, n_reps=1000, n_power=200)
+    kw = dict(n_null=4000, n_reps=1000, n_power=200)
     if a.quick:
         kw = dict(sizes=(500, 5000), n_null=100, n_reps=100, n_power=20)
     t = time.time()

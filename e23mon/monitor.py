@@ -14,10 +14,11 @@ A slice is compared with the reference (development or validation) sample on:
 Drift metrics have no closed-form null, so their null distribution is built by
 resampling the reference: each replicate draws a pseudo-reference of the
 reference size and a pseudo-slice of the slice size from the reference, refits
-the bins on the pseudo-reference and recomputes every metric. Calibrated
-thresholds are quantiles of that distribution; p-values come from a
-moment-matched scaled chi-square (PSI/CSI) or normal (AUC/KS drop) fit so that
-Holm's correction can work below the resolution of the resampling. The
+the bins on the pseudo-reference and recomputes every metric. A scaled chi-square (PSI/CSI) or
+normal (AUC/KS drop) is fitted to the draws by matching mean and variance;
+calibrated thresholds are its upper quantiles and p-values its tail areas, so
+Holm's correction can work below the resolution of the resampling and the
+threshold is less noisy than an empirical tail quantile. The
 calibration tests already have analytic nulls.
 """
 from __future__ import annotations
@@ -73,7 +74,7 @@ class Config:
     smoothing: float = st.DEFAULT_SMOOTHING
     max_categories: int = 20
     alpha: float = 0.05
-    n_null: int = 500
+    n_null: int = 1000
     n_boot: int = 200
     seed: int = 0
 
@@ -149,30 +150,38 @@ class NullModel:
                 rows.setdefault(k, []).append(v)
         return cls(n, {k: np.asarray(v) for k, v in rows.items()})
 
-    def threshold(self, metric: str, alpha: float) -> float:
+    def _fit(self, metric: str):
         d = self.draws[metric]
         d = d[~np.isnan(d)]
-        return float(np.quantile(d, 1 - alpha)) if d.size else float("nan")
+        if d.size < 10:
+            return d, None
+        mu, var = d.mean(), d.var(ddof=1)
+        if var <= 0 or (metric.startswith(("psi:", "csi:")) and mu <= 0):
+            return d, None
+        if metric.startswith(("psi:", "csi:")):
+            # Satterthwaite: value ~ c * chi2(df) with matching mean and variance.
+            return d, ("chi2", var / (2 * mu), 2 * mu**2 / var)
+        return d, ("norm", mu, np.sqrt(var))
+
+    def threshold(self, metric: str, alpha: float) -> float:
+        """Calibrated single-test threshold: the (1 - alpha) quantile of the
+        fitted null, i.e. the value at which ``pvalue`` equals alpha."""
+        d, fit = self._fit(metric)
+        if fit is None:
+            return float(np.quantile(d, 1 - alpha)) if d.size else float("nan")
+        if fit[0] == "chi2":
+            return float(fit[1] * sps.chi2.ppf(1 - alpha, fit[2]))
+        return float(fit[1] + fit[2] * sps.norm.ppf(1 - alpha))
 
     def pvalue(self, metric: str, value: float) -> float:
         if np.isnan(value):
             return float("nan")
-        d = self.draws[metric]
-        d = d[~np.isnan(d)]
-        if d.size < 10:
-            return float("nan")
-        mu, var = d.mean(), d.var(ddof=1)
-        if metric.startswith(("psi:", "csi:")):
-            if var <= 0 or mu <= 0:
-                return float(np.mean(d >= value))
-            # Satterthwaite: value ~ c * chi2(df) with matching mean and variance.
-            c = var / (2 * mu)
-            df = 2 * mu**2 / var
-            return float(sps.chi2.sf(value / c, df))
-        sd = np.sqrt(var)
-        if sd <= 0:
-            return float(np.mean(d >= value))
-        return float(sps.norm.sf((value - mu) / sd))
+        d, fit = self._fit(metric)
+        if fit is None:
+            return float(np.mean(d >= value)) if d.size else float("nan")
+        if fit[0] == "chi2":
+            return float(sps.chi2.sf(value / fit[1], fit[2]))
+        return float(sps.norm.sf((value - fit[1]) / fit[2]))
 
 
 def evaluate_slice(ref: Reference, cur: Sample, with_ci: bool = True) -> pd.DataFrame:
