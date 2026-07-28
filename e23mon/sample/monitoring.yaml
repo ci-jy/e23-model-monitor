@@ -1,0 +1,32 @@
+reference: reference.csv
+target_col: default
+features:
+- LIMIT_BAL
+- SEX
+- EDUCATION
+- MARRIAGE
+- AGE
+- PAY_0
+- PAY_2
+- BILL_AMT1
+- PAY_AMT1
+models:
+- model_id: CR-PD-001
+  name: Credit card PD scorecard (logistic)
+  score_col: pd_logit
+- model_id: CR-PD-002
+  name: Credit card PD challenger (gradient boosting)
+  score_col: pd_gbm
+slices:
+- period: 2026-04
+  file: slice_2026-04.csv
+- period: 2026-05
+  file: slice_2026-05.csv
+- period: 2026-06
+  file: slice_2026-06.csv
+- period: 2026-07
+  file: slice_2026-07.csv
+- period: 2026-08
+  file: slice_2026-08.csv
+- period: 2026-09
+  file: slice_2026-09.csv
