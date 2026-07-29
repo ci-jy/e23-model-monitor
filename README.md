@@ -134,3 +134,5 @@ Tests use the bundled synthetic portfolio only; `scripts/download_data.py` fetch
 ## Data
 
 UCI Machine Learning Repository, *Default of Credit Card Clients* (Yeh, I.-C., 2009), CC BY 4.0: https://archive.ics.uci.edu/dataset/350/default+of+credit+card+clients
+
+Project period: 2026-07-27 to 2026-07-29.
