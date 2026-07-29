@@ -111,7 +111,7 @@ What the numbers show:
 python3 -m pytest -q
 ```
 
-The suite (about 30 s) checks PSI, KS, AUC, Hosmer-Lemeshow, O/E and Holm against values worked out by hand and against scikit-learn/SciPy; edge cases (empty bins, bins empty in both samples, unseen categories, missing values, a slice with a single class); every inventory rule and the planted violations in the CSV and YAML inventories; that every formula-computed PSI in the workbook matches Python to 1e-9 after a LibreOffice recalculation; the CLI end to end; and a seeded check that the calibrated 5% PSI threshold fires on 400 no-drift slices at a rate inside the binomial interval of 5%.
+The suite (under a minute) checks PSI, KS, AUC, Hosmer-Lemeshow, O/E and Holm against values worked out by hand and against scikit-learn/SciPy; edge cases (empty bins, bins empty in both samples, unseen categories, missing values, a slice with a single class); every inventory rule and the planted violations in the CSV and YAML inventories; that every formula-computed PSI in the workbook matches Python to 1e-9 after a LibreOffice recalculation; the CLI end to end; and a seeded check that the calibrated 5% PSI threshold fires on 400 no-drift slices at a rate inside the binomial interval of 5%.
 
 Tests use the bundled synthetic portfolio only; `scripts/download_data.py` fetches the UCI data for the simulation.
 
