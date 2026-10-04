@@ -1,19 +1,19 @@
 # E-23 Model Risk Monitor
 
-Model inventory checks and drift monitoring for governance and model-risk analysts preparing for OSFI Guideline E-23: on a credit default model trained on the UCI credit-card data, its calibrated, Holm-corrected alarms held the false-alarm rate per model per period at 3.9-5.9% (nominal 5%) over 1,000 no-drift periods per slice size, where testing every metric uncorrected alarmed in 67-72% of them.
+Drift monitoring and model-inventory checks for bank model-risk teams preparing for OSFI Guideline E-23: drift alarms whose false-alarm rate is measured rather than assumed, and an Excel evidence pack a reviewer can recalculate.
+
+## Results
+
+- **Cut false alarms from 67-72% to 3.9-5.9% per model per period** by correcting for 28 simultaneous drift tests per model (Holm: PSI/CSI, AUC/KS, calibration), over 1,000 no-drift periods per slice size.
+- **Caught a credit-limit shift in 100% of periods** where the usual rule-of-thumb policy (PSI >= 0.25 plus fixed AUC/KS and calibration cut-offs) caught at most 14%.
+- **Held a known 5% false-alarm rate** (measured 4.1-5.8% at every slice size from 500 to 20,000) with PSI thresholds set by resampling.
+- **Flagged every planted E-23 violation** in the example inventory, and built an Excel evidence pack whose live formulas recompute 120 PSI tables, matching Python within 1e-9.
+
+Measured on a scikit-learn gradient-boosting default model trained on the UCI credit-card data (30,000 accounts); `scripts/run_simulation.py` reproduces every number.
 
 ![False-alarm rate and detection power](docs/false_alarm_power.png)
 
-False-alarm rate per model per period, 1,000 simulated no-drift periods per slice size (95% binomial band of 5%: 3.7-6.4%). Source: [`docs/results/false_alarm.csv`](docs/results/false_alarm.csv).
-
-| slice size | score PSI >= 0.10 | score PSI >= 0.25 | score PSI > calibrated 5% threshold | any metric, no correction | rule-of-thumb policy | calibrated + Holm |
-|---|---|---|---|---|---|---|
-| 500 | 0.0% | 0.0% | 4.4% | 70.2% | 12.1% | 5.4% |
-| 1,000 | 0.0% | 0.0% | 4.1% | 67.4% | 8.3% | 5.9% |
-| 2,000 | 0.0% | 0.0% | 5.1% | 69.9% | 6.0% | 3.9% |
-| 5,000 | 0.0% | 0.0% | 5.8% | 66.7% | 5.2% | 5.3% |
-| 10,000 | 0.0% | 0.0% | 5.6% | 69.4% | 5.4% | 5.9% |
-| 20,000 | 0.0% | 0.0% | 5.5% | 71.5% | 5.2% | 5.4% |
+**Stack:** Python, pandas, scikit-learn, SciPy, openpyxl (Excel), LibreOffice (headless recalculation), pytest
 
 ## Quickstart
 
@@ -78,6 +78,17 @@ PSI/CSI use a 0.5 pseudo-count per bin, so empty bins and new categories give fi
 * label drift: prior shift that multiplies the default rate by (1 + d), keeping the features given the outcome;
 * calibration drift: a share d of non-defaulters become defaulters, so PD is understated and ranking weakens.
 
+False-alarm rate per model per period, 1,000 simulated no-drift periods per slice size (95% binomial band of 5%: 3.7-6.4%). Source: [`docs/results/false_alarm.csv`](docs/results/false_alarm.csv).
+
+| slice size | score PSI >= 0.10 | score PSI >= 0.25 | score PSI > calibrated 5% threshold | any metric, no correction | rule-of-thumb policy | calibrated + Holm |
+|---|---|---|---|---|---|---|
+| 500 | 0.0% | 0.0% | 4.4% | 70.2% | 12.1% | 5.4% |
+| 1,000 | 0.0% | 0.0% | 4.1% | 67.4% | 8.3% | 5.9% |
+| 2,000 | 0.0% | 0.0% | 5.1% | 69.9% | 6.0% | 3.9% |
+| 5,000 | 0.0% | 0.0% | 5.8% | 66.7% | 5.2% | 5.3% |
+| 10,000 | 0.0% | 0.0% | 5.6% | 69.4% | 5.4% | 5.9% |
+| 20,000 | 0.0% | 0.0% | 5.5% | 71.5% | 5.2% | 5.4% |
+
 The rule-of-thumb policy is PSI/CSI >= 0.25, AUC or KS drop >= 0.05, O/E outside [0.8, 1.2], and HL p < 0.05, all without multiplicity correction. `python3 scripts/make_figure.py` turns `docs/results/*.csv` into the figure and the tables here.
 
 Detection power (share of 200 drifted periods with a model-level alarm), calibrated + Holm / rule-of-thumb policy. Source: [`docs/results/power.csv`](docs/results/power.csv).
@@ -123,16 +134,16 @@ Tests use the bundled synthetic portfolio only; `scripts/download_data.py` fetch
 * **Smoothing is in the formula.** The pseudo-count is part of the PSI definition used everywhere, so Excel reproduces Python exactly rather than approximately.
 * **Exit codes.** `validate` returns 0 and prints violations; `--strict` returns 1 when any are found, for use in a scheduled job.
 
-## Limitations
-
-* Thresholds assume reference and slice are independent draws; overlapping accounts or seasonal portfolios need a reference per season.
-* The scaled chi-square tail is an approximation; Holm p-values for very sparse categorical features can be slightly off in the far tail.
-* The calibration-drift test covers level and band shifts in default rates, not every form of miscalibration.
-* The rating rule and frequencies are an example policy, not OSFI's; institutions set their own. The tool covers inventory checks and monitoring evidence, not full E-23 documentation.
-* The bundled sample is synthetic; no real bank data or model names are used.
-
 ## Data
 
 UCI Machine Learning Repository, *Default of Credit Card Clients* (Yeh, I.-C., 2009), CC BY 4.0: https://archive.ics.uci.edu/dataset/350/default+of+credit+card+clients
+
+## Limitations and next steps
+
+* Thresholds assume reference and slice are independent draws; overlapping accounts or seasonal portfolios need a reference per season.
+* The scaled chi-square tail is an approximation, so Holm p-values for very sparse categorical features can be slightly off in the far tail.
+* The calibration-drift test covers level and band shifts in default rates, not every form of miscalibration.
+* The rating rule and review frequencies are an example policy, not OSFI's; institutions set their own. The tool produces inventory checks and monitoring evidence, not full E-23 documentation.
+* The bundled sample is synthetic (no real bank data or model names); the simulation study uses the public UCI data.
 
 Project period: 2026-07-27 to 2026-07-29.
